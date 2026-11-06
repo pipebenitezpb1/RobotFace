@@ -1,0 +1,35 @@
+# Entornos y modelos (se instalan / descargan: ver README)
+.venv/
+.venv-cad/
+modelos/
+__pycache__/
+.claude/
+
+# Secretos: NUNCA subir
+clave_anthropic.txt
+
+# Datos de personas (biométricos y conversaciones): quedan solo en este computador
+caras_conocidas.json
+personas.json
+memoria_robot.json
+conocimiento_escuela.md
+hablante.jpg
+caras.jpg
+camara_actual.jpg
+calibracion_habla.csv
+memoria_chat.md
+
+# Estado y registros de ejecución
+registro_*.txt
+umbral_voz.txt
+ajuste_mirada.txt
+durmiendo
+saludar
+decir
+escaneando
+.DS_Store
+estado_seguir.json
+vista_web.jpg
+
+# Fotos originales sin recortar (salen personas): en la página van las recortadas de web/img
+fotos_proyecto/

@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RobotFace · Claude físico y expresivo</title>
+<meta name="description" content="Ojos animatrónicos que miran, conversan con Claude y expresan emociones. Diseño de Interfaces, UAI 2026.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilo.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2l12 7v14l-12 7-12-7V9z' fill='%2316150f'/%3E%3Cpath d='M16 2l12 7-12 7-12-7z' fill='%231a7a2e'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<!-- Cubo isométrico (del logo Insta3D) -->
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="cubo" viewBox="0 0 40 46">
+    <defs><pattern id="pc" width="4" height="4" patternUnits="userSpaceOnUse"><rect width="4" height="4" fill="#1a7a2e"/><circle cx="2" cy="2" r=".9" fill="#16150f"/></pattern></defs>
+    <path d="M20 1 L39 12 L39 34 L20 45 L1 34 L1 12 Z" fill="#16150f"/>
+    <path d="M1 12 L20 1 L20 14 L1 25 Z" fill="#1a7a2e"/>
+    <path d="M1 25 L20 14 L39 25 L20 36 Z" fill="url(#pc)"/>
+    <path d="M20 36 L39 25 L39 34 L20 45 Z" fill="url(#pc)"/>
+  </symbol>
+</svg>
+
+<header class="barra">
+  <div class="envoltura">
+    <a class="marca" href="#inicio"><svg><use href="#cubo"/></svg><span>Robot<b>Face</b></span></a>
+    <nav class="menu">
+      <a href="#panel">Panel</a>
+      <a href="#idea">Idea</a>
+      <a href="#interaccion">Interacción</a>
+      <a href="#expresiones">Expresiones</a>
+      <a href="#sistema">Sistema</a>
+      <a href="#privacidad">Privacidad</a>
+      <a href="#fabricacion">Fabricación</a>
+      <a href="#uso">Uso</a>
+      <a class="descargar" href="#descargas">Descargas</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ PORTADA ============ -->
+<section class="portada" id="inicio" style="padding:0">
+  <div class="envoltura">
+    <div>
+      <div class="antetitulo">Diseño de Interfaces · UAI · 2026</div>
+      <h1>Claude físico <span>y expresivo</span></h1>
+      <p class="bajada">Unos ojos animatrónicos sobre la pantalla del notebook que te miran, conversan contigo por voz y muestran lo que sienten con los párpados. Una interfaz sin botones: mirada, gesto y voz.</p>
+      <div class="botones">
+        <a class="boton lleno" href="#panel">Encender el robot</a>
+        <a class="boton borde" href="#interaccion">Cómo funciona</a>
+      </div>
+      <div class="datos-portada">
+        <div>6<small>servos SG90</small></div>
+        <div>16<small>expresiones</small></div>
+        <div>10 s<small>sin nadie y se duerme</small></div>
+        <div>100 %<small>visión y voz en el Mac*</small></div>
+      </div>
+    </div>
+    <div class="demo">
+      <svg id="ojos-portada" role="img" aria-label="Ojos animados que siguen el cursor"></svg>
+      <div class="demo-pie">
+        <span class="demo-estado" id="estado-portada">Mirándote</span>
+        <span>Mueve el mouse · quieto 10 s y se duerme</span>
+      </div>
+      <div class="fichas" id="fichas-portada"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PANEL ============ -->
+<section id="panel" class="panel-robot">
+  <div class="envoltura">
+    <div class="panel-cabeza">
+      <div>
+        <div class="numero">Panel en vivo</div>
+        <h2>El robot, desde aquí</h2>
+      </div>
+      <div class="panel-acciones">
+        <span class="luz" id="luz-general"><i></i><span id="texto-general">Apagado</span></span>
+        <button class="boton lleno" id="btn-encender">Encender robot</button>
+        <button class="boton borde" id="btn-apagar">Apagar</button>
+      </div>
+    </div>
+    <div class="sin-servidor" id="sin-servidor" hidden>
+      Para manejar el robot desde la página, ábrela con <b>pagina.command</b> (doble clic en la carpeta del proyecto). Así se ve, pero los botones no hacen nada.
+    </div>
+    <div class="panel-rejilla">
+      <div class="pantalla-boca">
+        <canvas id="boca" width="1000" height="420" aria-label="La boca del robot en vivo"></canvas>
+        <div class="modo" id="modo"><i></i><span>apagado</span></div>
+        <div class="subtitulos">
+          <p class="sub-robot" id="sub-robot"></p>
+          <p class="sub-tu" id="sub-tu"></p>
+        </div>
+        <div class="mic"><div class="mic-barra"><div id="mic-nivel"></div><b id="mic-umbral"></b></div><span>micrófono</span></div>
+      </div>
+      <div class="lado-panel">
+        <div class="camara">
+          <img id="camara" alt="Cámara del robot con las caras marcadas">
+          <div class="camara-vacia" id="camara-vacia">Cámara apagada</div>
+          <span class="estado-sueno" id="estado-sueno"></span>
+        </div>
+        <ul class="caras" id="caras"></ul>
+      </div>
+    </div>
+    <div class="panel-abajo">
+      <div class="tarjeta-panel">
+        <h3>Expresiones en el robot</h3>
+        <div class="fichas" id="fichas-robot"></div>
+      </div>
+      <div class="tarjeta-panel">
+        <h3>Escanear una cara</h3>
+        <form id="form-escaneo" class="form-escaneo" autocomplete="off">
+          <input id="nombre-escaneo" maxlength="40" placeholder="Nombre de la persona (con su permiso)">
+          <button class="boton lleno" type="submit">Escanear</button>
+        </form>
+        <div class="escaneo-progreso" id="escaneo-progreso" hidden>
+          <div class="pasos-escaneo" id="pasos-escaneo"></div>
+          <p id="escaneo-texto"></p>
+          <button class="ficha" id="btn-cancelar-escaneo" type="button">Cancelar</button>
+        </div>
+        <p class="pequeno" id="conocidos"></p>
+      </div>
+      <div class="tarjeta-panel conversacion-tarjeta">
+        <h3>Conversación</h3>
+        <ol class="conversacion" id="conversacion"><li class="vacio">Todavía nadie habla.</li></ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ IDEA ============ -->
+<section id="idea" class="blanca">
+  <div class="envoltura">
+    <div class="titulo-seccion aparece">
+      <div><div class="numero">01 · La idea</div><h2>Darle un cuerpo a una IA</h2></div>
+      <p>Conversar con un chat es mirar una pantalla. Aquí la IA te mira de vuelta: sabe a quién le habla, reacciona con el cuerpo y se nota cuando piensa, duda o se aburre. Diseñamos la interacción completa, del gesto al mueble que lo sostiene.</p>
+    </div>
+    <div class="rejilla r3">
+      <div class="tarjeta aparece">
+        <div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></div>
+        <h3>Mira</h3>
+        <p>Sigue las caras con la cámara y apunta a los ojos de la persona. Si hay varias, mira a quien mueve la boca y se queda mirándola mientras le responde.</p>
+      </div>
+      <div class="tarjeta aparece">
+        <div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v3"/></svg></div>
+        <h3>Conversa</h3>
+        <p>Escucha con Whisper en el mismo Mac, piensa con Claude y habla con voz chilena. Responde corto, con humor, y se calla si lo interrumpes.</p>
+      </div>
+      <div class="tarjeta aparece">
+        <div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg></div>
+        <h3>Expresa</h3>
+        <p>Claude elige una emoción para cada frase y los ojos la actúan justo cuando la dice: sorpresa, sospecha, guiño, tristeza… La boca en pantalla cambia de forma con la emoción.</p>
+      </div>
+    </div>
+    <div class="fotos aparece">
+      <figure><img src="img/estudio_tres_cuartos.jpg" alt="El robot armado: ojos, base de acrílico, ganchos y caja de MDF"><figcaption>Prototipo final</figcaption></figure>
+      <figure><img src="img/estudio_lado.jpg" alt="El robot visto de lado, con la pata y los ganchos"><figcaption>De lado: ganchos y pata</figcaption></figure>
+      <figure><img src="img/estudio_arriba_arduino.jpg" alt="Vista desde arriba con el Arduino y la PCA9685"><figcaption>Mecanismo + electrónica</figcaption></figure>
+      <figure><img src="img/estudio_frente_mdf.jpg" alt="Prueba de frente de MDF con un ojo abierto y otro cerrado"><figcaption>Prueba de carcasa</figcaption></figure>
+      <figure><img src="img/estudio_mecanismo.jpg" alt="El mecanismo EyeMech con un párpado suelto"><figcaption>EyeMech ε3.2</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============ INTERACCIÓN ============ -->
+<section id="interaccion" class="oscura puntos-fondo">
+  <div class="envoltura">
+    <div class="titulo-seccion aparece">
+      <div><div class="numero">02 · Interacción</div><h2>Un ciclo de vida, no un menú</h2></div>
+      <p>El robot no tiene botones de encendido. Su estado depende de si hay alguien frente a él y de lo que esa persona hace.</p>
+    </div>
+    <div class="flujo aparece">
+      <div class="paso"><div class="circulo">z</div><h4>Duerme</h4><p>10 s sin ver a nadie: cierra los ojos y ronca en pantalla. El ruido no lo despierta.</p></div>
+      <div class="paso"><div class="circulo">◉</div><h4>Despierta</h4><p>Solo cuando ve una cara: ojos entreabiertos, parpadeo y los abre mirándote.</p></div>
+      <div class="paso"><div class="circulo">“</div><h4>Saluda</h4><p>Una frase corta de recién despertado. Si te reconoce, por tu nombre.</p></div>
+      <div class="paso"><div class="circulo">))</div><h4>Escucha</h4><p>Mira a quien habla. Ignora las voces del fondo si nadie frente a la cámara mueve la boca.</p></div>
+      <div class="paso"><div class="circulo">…</div><h4>Piensa</h4><p>Mira hacia arriba. Solo si le hiciste una pregunta llena la pausa con un “mmm, a ver”.</p></div>
+      <div class="paso vuelve"><div class="circulo">↺</div><h4>Responde</h4><p>Frase a frase, con una expresión en cada una. Si lo interrumpes, se calla y vuelve a escuchar.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EXPRESIONES ============ -->
+<section id="expresiones">
+  <div class="envoltura">
+    <div class="titulo-seccion aparece">
+      <div><div class="numero">03 · Expresiones</div><h2>16 gestos de párpados</h2></div>
+      <p>Las mismas 16 expresiones que corren en el Arduino, con su número de orden (<code>E n</code>). Los dos ojos parpadean siempre juntos: la asimetría queda para el guiño y los gestos que la necesitan. Pruébalas aquí.</p>
+    </div>
+    <div class="dos-col">
+      <div class="mini-demo aparece">
+        <svg id="ojos-expresiones" role="img" aria-label="Ojos haciendo la expresión elegida"></svg>
+        <p><span class="demo-estado" id="estado-expresiones">Mirándote</span></p>
+      </div>
+      <div class="expresiones aparece" id="lista-expresiones"></div>
+    </div>
+    <div class="tarjeta aparece" style="margin-top:36px">
+      <div class="dos-col" style="align-items:center">
+        <div><span class="etiqueta">Boca en pantalla</span><h3>La boca cambia con la emoción</h3><p>Una línea animada que se abre con el volumen de la voz y toma la forma de la emoción del momento: sonrisa, “o” de sorpresa, onda de duda, zzz al dormir.</p></div>
+        <img src="img/bocas_emociones.png" alt="Formas de la boca para cada emoción" style="border-radius:10px;background:#000">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SISTEMA ============ -->
+<section id="sistema" class="oscura">
+  <div class="envoltura">
+    <div class="titulo-seccion aparece">
+      <div><div class="numero">04 · Sistema</div><h2>Dos programas y un Arduino</h2></div>
+      <p>Todo corre en un MacBook Air: la visión, la voz a texto y la boca. Solo la conversación con Claude pasa por internet.</p>
+    </div>
+    <div class="diagrama aparece">
+      <svg viewBox="0 0 1000 330" font-family="Barlow Condensed, sans-serif">
+        <defs><marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#2fae4a"/></marker></defs>
+        <rect x="10" y="10" width="640" height="310" rx="16" fill="none" stroke="#45433a" stroke-dasharray="6 6"/>
+        <text x="30" y="40" fill="#a9a79b" font-size="16" letter-spacing="3">MACBOOK AIR M2</text>
+        <g font-size="20" font-weight="700" fill="#fff">
+          <rect x="30" y="70" width="130" height="56" rx="10" fill="#2c2a21"/><text x="95" y="104" text-anchor="middle">Cámara</text>
+          <rect x="30" y="220" width="130" height="56" rx="10" fill="#2c2a21"/><text x="95" y="254" text-anchor="middle">Micrófono</text>
+          <rect x="230" y="60" width="180" height="76" rx="10" fill="#1a7a2e"/><text x="320" y="92" text-anchor="middle">seguir.py</text>
+          <text x="320" y="116" text-anchor="middle" font-size="14" font-weight="500" fill="#d8f0dc">YuNet · MediaPipe · SFace</text>
+          <rect x="230" y="210" width="180" height="76" rx="10" fill="#1a7a2e"/><text x="320" y="242" text-anchor="middle">hablar.py</text>
+          <text x="320" y="266" text-anchor="middle" font-size="14" font-weight="500" fill="#d8f0dc">Whisper · voz · boca</text>
+          <rect x="480" y="146" width="150" height="62" rx="10" fill="#2c2a21"/><text x="555" y="173" text-anchor="middle">Pantalla</text>
+          <text x="555" y="195" text-anchor="middle" font-size="14" font-weight="500" fill="#a9a79b">boca + parlantes</text>
+          <rect x="700" y="210" width="130" height="76" rx="10" fill="#2c2a21" stroke="#2fae4a"/><text x="765" y="242" text-anchor="middle">Claude</text>
+          <text x="765" y="266" text-anchor="middle" font-size="14" font-weight="500" fill="#a9a79b">Haiku 5.5 · API</text>
+          <rect x="700" y="60" width="130" height="76" rx="10" fill="#2c2a21"/><text x="765" y="92" text-anchor="middle">Arduino UNO</text>
+          <text x="765" y="116" text-anchor="middle" font-size="14" font-weight="500" fill="#a9a79b">OjosAnimados.ino</text>
+          <rect x="860" y="60" width="120" height="76" rx="10" fill="#2c2a21"/><text x="920" y="92" text-anchor="middle">PCA9685</text>
+          <text x="920" y="116" text-anchor="middle" font-size="14" font-weight="500" fill="#a9a79b">I2C 0x40</text>
+          <rect x="860" y="190" width="120" height="110" rx="10" fill="#f26b1d"/><text x="920" y="238" text-anchor="middle">6 × SG90</text>
+          <text x="920" y="262" text-anchor="middle" font-size="14" font-weight="500" fill="#fff">4 párpados</text>
+          <text x="920" y="280" text-anchor="middle" font-size="14" font-weight="500" fill="#fff">2 mirada X/Y</text>
+        </g>
+        <g stroke="#2fae4a" stroke-width="2.5" fill="none" marker-end="url(#fl)">
+          <path d="M160 98H226"/><path d="M160 248H226"/>
+          <path d="M410 228L476 196"/>
+          <path d="M410 98H696"/><path d="M830 98H856"/><path d="M920 136V186"/>
+          <path d="M410 242H696"/><path d="M698 266H414"/>
+          <path d="M305 140V206"/><path d="M335 206V140"/>
+        </g>
+        <g font-size="15" fill="#a9a79b">
+          <text x="440" y="88">USB serie 115200 · M x y · E n</text>
+          <text x="345" y="166">UDP 47800 / 47801</text>
+          <text x="345" y="184" font-size="13">expresiones · quién habla</text>
+          <text x="520" y="236" font-size="13">texto + foto de quien habla</text>
+          <text x="560" y="285" font-size="13">respuesta</text>
+          <text x="835" y="88" font-size="13">I2C</text>
+        </g>
+      </svg>
+    </div>
+    <div class="rejilla r2" style="margin-top:28px">
+      <div class="tarjeta aparece">
+        <h3>Protocolo con el Arduino</h3>
+        <table>
+          <tr><th>Orden</th><th>Qué hace</th></tr>
+          <tr><td><code>M x y</code></td><td>Mueve la mirada (−100 a 100). Los párpados acompañan: mirar abajo baja el superior.</td></tr>
+          <tr><td><code>E n</code></td><td>Expresión 1–16; <code>E 0</code> vuelve a la normal. 15 = dormido, 16 = despertar.</td></tr>
+          <tr><td><code>D</code></td><td>Diagnóstico: expresión y ángulo de cada servo.</td></tr>
+          <tr><td>—</td><td>1,5 s sin órdenes: mira solo al azar. 15 s: sale de dormido.</td></tr>
+        </table>
+      </div>
+      <div class="tarjeta aparece">
+        <h3>Calibración de los servos</h3>
+        <table>
+          <tr><th>Canal</th><th>Parte</th><th>Abierto</th><th>Cerrado</th></tr>
+          <tr><td>0</td><td>Párpado inferior derecho</td><td>55°</td><td>138°</td></tr>
+          <tr><td>1</td><td>Párpado superior derecho</td><td>140°</td><td>42°</td></tr>
+          <tr><td>2</td><td>Mirada arriba / abajo</td><td colspan="2">centro 100° · 0° abajo · 180° arriba</td></tr>
+          <tr><td>3</td><td>Párpado inferior izquierdo</td><td>140°</td><td>30°</td></tr>
+          <tr><td>4</td><td>Párpado superior izquierdo</td><td>25°</td><td>135°</td></tr>
+          <tr><td>5</td><td>Mirada a los lados</td><td colspan="2">40° su derecha · 130° su izquierda</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRIVACIDAD ============ -->
+<section id="privacidad" class="oscura" style="padding-top:0">
+  <div class="envoltura">
+    <div class="titulo-seccion aparece" style="border-top:1px solid #38362b;padding-top:96px">
+      <div><div class="numero">05 · Reconocimiento y privacidad</div><h2>Te reconoce si tú quieres</h2></div>
+      <p>Una cara es un dato biométrico. El robot pregunta antes de recordarla, la guarda solo en este computador y la olvida cuando se lo pides.</p>
+    </div>
+    <div class="dos-col">
+      <div class="tarjeta aparece">
+        <span class="etiqueta">Cara + ropa</span>
+        <h3>Una sola nota, dos pistas</h3>
+        <p style="margin-bottom:22px">La cara pesa 70 % y la ropa 30 %. La ropa ayuda cuando la cara se ve de lado o lejos; una cara claramente distinta le gana a una ropa parecida. La nota se suaviza en el tiempo para no saltar de persona.</p>
+        <div class="nota" id="nota"></div>
+        <div class="leyenda"><span><i style="background:#2fae4a"></i>cara</span><span><i style="background:#8fd19d"></i>ropa</span><span>umbral 0,50</span></div>
+      </div>
+      <div class="aparece">
+        <div class="tarjeta" style="margin-bottom:20px">
+          <span class="etiqueta">Escaneo guiado</span>
+          <h3>Botón “Escanear cara”</h3>
+          <p>En la ventana de la cámara: escribes tu nombre y el robot te guía hablando por 6 ángulos —de frente, a tu izquierda, a tu derecha, barbilla arriba, abajo y de frente otra vez— con un marco que barre tu cara y un destello en cada captura.</p>
+        </div>
+        <ul class="lista-check">
+          <li>Solo se guarda la cara de quien dice que sí, por voz o con el escaneo.</li>
+          <li>Todo queda en el Mac: huellas de 128 números, no fotos.</li>
+          <li>“Olvídame” borra la cara y la ropa de esa persona.</li>
+          <li>La clave de la API y los datos de personas nunca entran a las descargas.</li>
+          <li>*Solo sale a internet el texto de la conversación hacia Claude (y la foto chica de quien habla, para que sepa a quién le responde).</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FABRICACIÓN ============ -->
+<section id="fabricacion" class="blanca">
+  <div class="envoltura">
+    <div class="titulo-seccion aparece">
+      <div><div class="numero">06 · Fabricación</div><h2>Del mecanismo al escritorio</h2></div>
+      <p>Probamos tapar el mecanismo con una carcasa, pero chocaba con los párpados. La decisión final: el mecanismo queda a la vista sobre una base de acrílico, y solo la electrónica va en una caja con grabado de cerebro.</p>
+    </div>
+    <div class="rejilla r3">
+      <div class="pieza aparece span2">
+        <div class="imagen"><img src="img/caja_mdf3.svg" alt="Cortes láser de la caja de MDF con grabado tipo cerebro"></div>
+        <div class="texto"><span class="etiqueta">Láser · MDF 3 mm</span><h3>Caja de la electrónica</h3><p>Cinco caras con uniones dentadas y tapa de MDF. Todas las caras grabadas con circunvoluciones para que parezca un cerebro. Hoyos al frente para los cables de los ojos y atrás para USB y USB-C.</p></div>
+      </div>
+      <div class="pieza aparece">
+        <div class="imagen"><img src="img/base_acrilico5.svg" alt="Base de acrílico de 5 mm con ranuras"></div>
+        <div class="texto"><span class="etiqueta">Láser · acrílico 5 mm</span><h3>Base</h3><p>Ranuras para encajar ganchos, pata, cuna del mecanismo y soportes de la UNO y la PCA9685.</p></div>
+      </div>
+      <div class="pieza aparece">
+        <div class="imagen"><img src="img/pata_lateral.png" alt="Vista lateral de la pata trasera"></div>
+        <div class="texto"><span class="etiqueta">Impresión 3D</span><h3>Ganchos fijos a 15°</h3><p>Ganchos rectos adelante y una pata trasera de placa + diagonal, fijas con clips: siempre perpendicular a la pantalla, sin hacer palanca.</p></div>
+      </div>
+      <div class="pieza aparece">
+        <div class="imagen"><img src="img/pata_mesa.png" alt="Pata con varilla hasta la mesa"></div>
+        <div class="texto"><span class="etiqueta">Impresión 3D + varilla M8</span><h3>Pata a la mesa</h3><p>El peso bajaba por la bisagra del notebook. Una varilla M8 lo lleva a la mesa; el pie con tuerca atrapada regula la altura.</p></div>
+      </div>
+      <div class="pieza aparece">
+        <div class="imagen"><img src="img/capsula_usbc.png" alt="Cápsula impresa para el módulo USB-C"></div>
+        <div class="texto"><span class="etiqueta">Impresión 3D</span><h3>Cápsula USB-C</h3><p>Encierra el módulo hembra que alimenta los servos; el conector entra a presión en su forma redondeada y se atornilla a la pared de la caja.</p></div>
+      </div>
+      <div class="pieza aparece span2">
+        <div class="imagen"><img src="img/vista.png" alt="Vistas del conjunto sobre la pantalla"></div>
+        <div class="texto"><span class="etiqueta">Modelo paramétrico · CadQuery</span><h3>Todo generado con código</h3><p>Cada pieza sale de un script en Python a partir de las medidas reales del mecanismo, con revisión automática de choques contra la pantalla y entre piezas.</p></div>
+      </div>
+      <div class="pieza aparece">
+        <div class="imagen"><img src="img/mapa_ranuras.png" alt="Mapa de qué pieza va en cada ranura"></div>
+        <div class="texto"><span class="etiqueta">Armado</span><h3>Mapa de ranuras</h3><p>Qué pieza va en cada corte de la base.</p></div>
+      </div>
+    </div>
+    <div class="tarjeta aparece" style="margin-top:28px">
+      <h3>Materiales</h3>
+      <table>
+        <tr><th>Parte</th><th>Detalle</th></tr>
+        <tr><td>Mecanismo de ojos</td><td>EyeMech ε3.2 (Will Cogley), impreso en PLA naranjo</td></tr>
+        <tr><td>Servos</td><td>6 × SG90</td></tr>
+        <tr><td>Control</td><td>Arduino UNO + PCA9685 (SDA→A4, SCL→A5, V+ a 5 V)</td></tr>
+        <tr><td>Energía servos</td><td>Módulo USB-C hembra de 5 V</td></tr>
+        <tr><td>Corte láser</td><td>Acrílico 5 mm (base) · MDF 3 mm (caja)</td></tr>
+        <tr><td>Impresión 3D</td><td>12 piezas: ganchos, pata, cuna (3), soportes UNO/PCA, tapón, cápsula USB-C (2), abrazadera y pie</td></tr>
+        <tr><td>Ferretería</td><td>Varilla roscada M8 ~22 cm, 2 tuercas M8, tornillos M3, fieltro</td></tr>
+      </table>
+    </div>
+    <h3 class="aparece" style="margin:56px 0 18px">Proceso</h3>
+    <div class="galeria aparece">
+      <figure><img src="img/boceto.jpg" alt="Boceto de la montura sobre la pantalla"><figcaption>Boceto de la montura: gancho, base y pata en diagonal</figcaption></figure>
+      <figure><img src="img/estudio_arriba.jpg" alt="Base de acrílico con los soportes de la UNO y la PCA9685"><figcaption>Base de acrílico con los soportes de la UNO y la PCA9685</figcaption></figure>
+      <figure><img src="img/proceso_soportes.jpg" alt="Primer armado sobre el acrílico"><figcaption>Primer armado sobre el acrílico recién cortado</figcaption></figure>
+      <figure><img src="img/proceso_electronica.jpg" alt="Arduino y PCA9685 cableados"><figcaption>Arduino UNO + PCA9685 cableados</figcaption></figure>
+      <figure><img src="img/proceso_lado.jpg" alt="El robot de lado sostenido en la mano"><figcaption>Ganchos a 15° y pata trasera</figcaption></figure>
+      <figure><img src="img/proceso_frente.jpg" alt="El robot de frente"><figcaption>Primera prueba de mirada</figcaption></figure>
+      <figure><img src="img/prueba_mdf.jpg" alt="Prueba de frente de MDF"><figcaption>Frente de MDF: chocaba con los párpados, se descartó</figcaption></figure>
+      <figure><img src="img/proceso_caja_abierta.jpg" alt="Caja de MDF abierta con la electrónica"><figcaption>La electrónica dentro de la caja</figcaption></figure>
+      <figure><img src="img/proceso_caja_cerebro.jpg" alt="Caja de MDF con grabado de cerebro"><figcaption>Caja con grabado de cerebro</figcaption></figure>
+      <figure><img src="img/proceso_prueba_notebook.jpg" alt="Prueba de altura sobre el notebook"><figcaption>Prueba de altura sobre el notebook</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============ USO ============ -->
+<section id="uso">
+  <div class="envoltura">
+    <div class="titulo-seccion aparece">
+      <div><div class="numero">07 · Uso</div><h2>Encenderlo</h2></div>
+      <p>Doble clic en los archivos <code>.command</code> de la carpeta del proyecto. Cada uno cierra solo la copia anterior que haya quedado abierta.</p>
+    </div>
+    <div class="dos-col">
+      <ol class="pasos-uso aparece" style="padding:0;margin:0">
+        <li><div><h3>Conectar</h3><p>Fuente de 5 V a los servos y Arduino al Mac por USB.</p></div></li>
+        <li><div><h3>seguir.command</h3><p>Abre la cámara: los ojos te siguen.</p></div></li>
+        <li><div><h3>hablar.command</h3><p>Abre la boca en pantalla y empieza a escuchar. Háblale normal.</p></div></li>
+        <li><div><h3>Registrar caras</h3><p>Con permiso de la persona: botón <b>Escanear cara</b> en la ventana de la cámara.</p></div></li>
+      </ol>
+      <div class="rejilla r2 aparece">
+        <div class="tarjeta"><h3>Ventana de la cámara</h3>
+          <div class="teclas"><kbd>R</kbd> escanear <kbd>1–9</kbd> expresiones <kbd>W</kbd><kbd>S</kbd> altura mirada <kbd>Q</kbd> salir</div></div>
+        <div class="tarjeta"><h3>Ventana de la boca</h3>
+          <div class="teclas"><kbd>F</kbd> pantalla completa <kbd>M</kbd> silenciar <kbd>S</kbd> subtítulos <kbd>U</kbd> umbral <kbd>Esc</kbd> salir</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DESCARGAS ============ -->
+<section id="descargas" class="oscura puntos-fondo">
+  <div class="envoltura">
+    <div class="titulo-seccion aparece">
+      <div><div class="numero">08 · Descargas</div><h2>Todo el proyecto</h2></div>
+      <p>Código, piezas y cortes listos para fabricar. Sin la clave de la API ni datos de personas.</p>
+    </div>
+    <div class="rejilla r2">
+      <a class="descarga aparece" href="descargas/RobotFace_codigo.zip" download>
+        <div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg></div>
+        <div><b>Código completo</b><span>seguir.py, hablar.py, sketches de Arduino, modelos CAD, README</span></div><span class="peso" data-peso="descargas/RobotFace_codigo.zip">ZIP</span></a>
+      <a class="descarga aparece" href="descargas/OjosAnimados.ino" download>
+        <div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9zM9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"/></svg></div>
+        <div><b>Sketch del Arduino</b><span>OjosAnimados.ino: mirada, parpadeo y 16 expresiones</span></div><span class="peso" data-peso="descargas/OjosAnimados.ino">INO</span></a>
+      <a class="descarga aparece" href="descargas/RobotFace_piezas_3d.zip" download>
+        <div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M12 22V12M21 7l-9 5-9-5"/></svg></div>
+        <div><b>Piezas para imprimir</b><span>12 STL: ganchos, pata, cuna, soportes, cápsula USB-C</span></div><span class="peso" data-peso="descargas/RobotFace_piezas_3d.zip">ZIP</span></a>
+      <a class="descarga aparece" href="descargas/RobotFace_corte_laser.zip" download>
+        <div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v8M8 6l4 4 4-4M3 14h18v7H3z"/></svg></div>
+        <div><b>Cortes láser</b><span>Base acrílico 5 mm, caja MDF 3 mm, prueba de ajuste</span></div><span class="peso" data-peso="descargas/RobotFace_corte_laser.zip">ZIP</span></a>
+    </div>
+    <div class="aviso aparece">Para que funcione falta poner tu propia clave de la API de Anthropic en <code>clave_anthropic.txt</code> y descargar los modelos con <code>descargar_modelos.sh</code>. Instrucciones en el <a href="descargas/README.md" style="color:#7fdc92">README</a>.</div>
+  </div>
+</section>
+
+<footer>
+  <div class="envoltura">
+    <img class="logo-pie" src="img/insta3d.svg" alt="Insta3D">
+    <p>RobotFace · Diseño de Interfaces · Universidad Adolfo Ibáñez · 2026</p>
+    <p>Mecanismo: <a href="https://github.com/will-cogley/EyeMech_Epsilon" style="color:#7fdc92">EyeMech ε3.2</a> de Will Cogley · Conversación: Claude (Anthropic)</p>
+  </div>
+</footer>
+
+<script src="ojos.js"></script>
+<script src="pagina.js"></script>
+<script src="panel.js"></script>
+<div class="visor" id="visor" hidden><img alt=""><p></p></div>
+<script>
+  // Ver las fotos en grande
+  const visor = document.getElementById("visor");
+  document.querySelectorAll(".fotos img, .galeria img").forEach(im => im.addEventListener("click", () => {
+    visor.querySelector("img").src = im.src; visor.querySelector("img").alt = im.alt;
+    visor.querySelector("p").textContent = im.closest("figure").querySelector("figcaption")?.textContent || "";
+    visor.hidden = false;
+  }));
+  visor.onclick = () => visor.hidden = true;
+  addEventListener("keydown", e => { if (e.key === "Escape") visor.hidden = true; });
+</script>
+</body>
+</html>
