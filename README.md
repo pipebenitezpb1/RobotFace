@@ -91,10 +91,37 @@ Ninguno de esos archivos, ni la clave de la API, entra al repositorio (ver `.git
 
 ## Página en línea
 
-La página de la entrega se publica con GitHub Pages en https://pipebenitezpb1.github.io/RobotFace/ (los ojos interactivos funcionan; el panel en vivo necesita `servidor.py` en el Mac). Proyecto en el portafolio: https://portafolio.insta3d.cl/universidad/robotface.html
+La página de la entrega se publica con GitHub Pages en https://pipebenitezpb1.github.io/RobotFace/ (los ojos interactivos funcionan; el panel en vivo necesita `servidor.py` en el Mac). Proyecto en el portafolio: https://portafolio.insta3d.cl/robotface/
 
 ## Créditos
 
 - Mecanismo de ojos **EyeMech ε3.2** de Will Cogley (https://github.com/will-cogley/EyeMech_Epsilon). Su STL no se incluye en este repositorio; descárgalo de su página. `cabeza/vista.py` y `cabeza/plano.py` lo necesitan para dibujar.
 - Montura, cuna, soportes, cápsula USB-C, caja y base de acrílico: diseño propio.
 - Autor: Luis-Felipe Benítez.
+
+---
+
+## Ficha para el Taller de Diseño de Interfaces
+
+**Unidad 2 · Interfaces Físicas** · Taller de Diseño de Interfaces, Universidad Adolfo Ibáñez · 2026 · Ficha en el portafolio: [https://portafolio.insta3d.cl/robotface/](https://portafolio.insta3d.cl/robotface/)
+
+### Objetivos
+- Darle a un asistente de IA un cuerpo físico: una mirada, un gesto y una voz.
+- Integrar visión (detección y seguimiento de caras), voz y control de servos en tiempo real.
+- Diseñar una montura paramétrica que se fabrica en acrílico, MDF e impresión 3D.
+
+### Público y contexto de uso
+Personas que conversan con un asistente en su escritorio y público de una muestra. Funciona sobre un MacBook, en un espacio con buena luz; el reconocimiento facial se usa solo con consentimiento.
+
+### Proceso e iteraciones
+Registro en [`PROCESO_ENTREGA.md`](PROCESO_ENTREGA.md). Fotos y planos en `web/img/` (boceto, prueba en MDF, estudios de la montura, caja, electrónica, prueba sobre el notebook) y renders en `cabeza/renders/`.
+
+| | |
+|---|---|
+| ![Boceto](web/img/boceto.jpg) **Boceto** | ![Prueba MDF](web/img/prueba_mdf.jpg) **Prueba en MDF** |
+| ![Electrónica](web/img/proceso_electronica.jpg) **Electrónica** | ![Prueba en el notebook](web/img/proceso_prueba_notebook.jpg) **Prueba en el notebook** |
+
+> 📌 **Por aportar:** notas de pruebas con usuarios (reacciones, problemas de seguimiento, ajustes).
+
+### Video demostrativo
+> 📌 **Por aportar:** video de RobotFace conversando y cambiando de expresión, subido a YouTube y enlazado aquí.
